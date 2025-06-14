@@ -136,3 +136,12 @@ li button {
 p {
     margin-bottom: 12pt;
 }
+@media (max-width: 600px) {
+    .glass-card {
+        width: 90%;
+        padding: 15px;
+    }
+    li {
+        margin-left: 1cm;
+    }
+}
