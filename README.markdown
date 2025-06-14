@@ -16,17 +16,6 @@ This project implements a To-Do List where users can add, edit, and delete tasks
 - Responsive design
 - Typography: 10pt Arial, justified text, 2cm left indent, 1.5 line spacing, 12pt space after paragraphs
 
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/to-do-list.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd to-do-list
-   ```
-3. Open `index.html` in a web browser.
 
 ## Usage
 
@@ -49,7 +38,3 @@ The application uses the Glassmorphism design trend, featuring:
 - **Cards and Modals**: Translucent with a frosted glass effect using `backdrop-filter: blur(10px)` and `rgba` backgrounds.
 - **Buttons**: Glassy appearance with hover animations for visual feedback.
 - **Typography**: 10pt Arial, fully justified, with 2cm left indent, 1.5 line spacing, and 12pt space after paragraphs.
-
-## License
-
-This project is licensed under the MIT License.
