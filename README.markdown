@@ -1,6 +1,6 @@
 # To-Do List
 
-A simple To-Do List application built with HTML, CSS, and JavaScript, featuring a Glassmorphism UI design.
+A simple To-Do List application built with <i>HTML, CSS, and JavaScript</i>, featuring a Glassmorphism UI design.
 
 ## Description
 
