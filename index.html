@@ -1,72 +1,87 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="description" content="Manage tasks with our free, minimalist To-Do List app featuring a sleek Glassmorphism design. Try it now!">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List</title>
+    <meta name="description" content="Efficiently manage tasks with our minimalist To-Do List application, featuring a modern Glassmorphism design.">
+    <title>Task Manager</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <div class="glass-card">
-            <h1>To-Do List and Task Manager</h1>
-                <h2>Add a Task or Manage task</h2>
-                <p>Organize your day with our free To-Do List app, featuring a stunning Glassmorphism design. Add, edit, and delete tasks effortlessly.</p>
+            <h1>Task Manager</h1>
+            <h2>Create or Manage Tasks</h2>
+            <p>Streamline your daily organization with our free Task Manager application. Effortlessly add, edit, and remove tasks with a sleek, modern interface.</p>
             <div class="input-section">
-                <input type="text" id="taskInput" placeholder="Enter a new task...">
+                <input type="text" id="taskInput" placeholder="Enter a new task..." aria-label="New task input">
                 <button onclick="addTask()">Add Task</button>
             </div>
-            <ul id="taskList"></ul>
+            <ul id="taskList" aria-live="polite"></ul>
         </div>
-        <div id="modal" class="modal">
+        <div id="modal" class="modal" role="dialog" aria-labelledby="modalTitle">
             <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Edit Task</h2>
-                <input type="text" id="editInput">
-                <button onclick="saveEdit()">Save</button>
+                <span class="close" aria-label="Close modal">&times;</span>
+                <h2 id="modalTitle">Edit Task</h2>
+                <input type="text" id="editInput" aria-label="Edit task input">
+                <button onclick="saveEdit()">Save Changes</button>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        // Global variables for file handling
+        let isXlsxFile = false;
+        const xlsxFileRegistry = {};
+        const fileDataStore = {};
+
+        /**
+         * Checks if a cell contains valid content (not empty, null, or undefined).
+         * @param {any} cell - The cell value to evaluate.
+         * @returns {boolean} - True if the cell is filled, false otherwise.
+         */
+        function isCellFilled(cell) {
+            return cell !== '' && cell != null;
+        }
+
+        /**
+         * Processes and loads data from a specified file, handling XLSX or raw file data.
+         * For XLSX files, converts the data to CSV format, filtering out blank rows and determining the header row.
+         * @param {string} filename - The name of the file to process.
+         * @returns {string} - The processed file data as CSV or raw content, or an empty string on error.
+         */
+        function loadFileData(filename) {
+            if (isXlsxFile && xlsxFileRegistry[filename]) {
+                try {
+                    // Parse XLSX file from base64-encoded data
+                    const workbook = XLSX.read(fileDataStore[filename], { type: 'base64' });
+                    const firstSheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheetName];
+
+                    // Convert sheet to JSON, excluding blank rows
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    const filteredData = jsonData.filter(row => row.some(isCellFilled));
+
+                    // Identify header row by comparing filled cell counts
+                    let headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(isCellFilled).length >= filteredData[index + 1]?.filter(isCellFilled).length
+                    );
+
+                    // Fallback to first row if no suitable header is found or index exceeds limit
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+
+                    // Convert filtered data back to CSV format
+                    const csvSheet = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    return XLSX.utils.sheet_to_csv(csvSheet, { header: 1 });
+                } catch (error) {
+                    console.error('Error processing XLSX file:', error);
+                    return '';
+                }
+            }
+            return fileDataStore[filename] || '';
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
