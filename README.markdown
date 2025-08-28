@@ -20,7 +20,7 @@ This project implements a To-Do List where users can add, edit, and delete tasks
 ## Usage
 
 - Enter a task in the input field and click "<i>Add Task<i>" to add it to the list.
-- Click "Edit" on a task to open a modal and modify the task text.
+- Click "<i>Edit</i>" on a task to open a modal and modify the task text.
 - Click "Delete" to remove a task from the list.
 - The modal can be closed by clicking the "X" button or clicking outside the modal.
 
