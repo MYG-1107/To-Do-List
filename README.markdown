@@ -37,4 +37,4 @@ The application uses the Glassmorphism design trend, featuring:
 - **Background**: A colorful bokeh image from Unsplash, blurred to create depth.
 - **Cards and Modals**: Translucent with a frosted glass effect using `backdrop-filter: blur(10px)` and `rgba` backgrounds.
 - **Buttons**: Glassy appearance with hover animations for visual feedback.
-- **Typography**: 10pt Arial, fully justified, with 2cm left indent, 1.5 line spacing, and 12pt space after paragraphs.
+
