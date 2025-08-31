@@ -33,7 +33,5 @@ This project implements a To-Do List where users can add, edit, and delete tasks
 
 ## Design Details
 
-The application uses the Glassmorphism design trend, featuring:
-- **Background**: A colorful bokeh image from Unsplash, blurred to create depth.
 
 
