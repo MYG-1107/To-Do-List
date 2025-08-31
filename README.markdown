@@ -31,7 +31,5 @@ This project implements a To-Do List where users can add, edit, and delete tasks
 - **JavaScript**: Functionality for adding, editing, and deleting tasks
 - **External Resource**: Background image from Unsplash
 
-## Design Details
-
 
 
